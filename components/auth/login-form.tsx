@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import signIn from "@/firebase/auth/signin";
-import BasicLabelInput from "@/components/basic-label-input";
+import BasicLabelInput from "@/components/ui/basic-label-input";
 
 export default function LoginForm() {
 	const [email, setEmail] = React.useState('');

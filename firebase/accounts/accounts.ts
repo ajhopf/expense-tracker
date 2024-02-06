@@ -1,7 +1,6 @@
 import { addDoc, collection, getFirestore, where, query, getDocs, getDoc } from "@firebase/firestore";
 import firebaseApp from "@/firebase/config";
 
-
 const db = getFirestore(firebaseApp);
 
 export async function addAccount(userId) {
