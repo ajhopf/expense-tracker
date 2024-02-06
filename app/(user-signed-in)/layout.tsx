@@ -1,23 +1,30 @@
 'use client'
 
-import { AuthContext, useAuthContext } from "@/context/auth-context";
+import { useAuthContext } from "@/context/auth-context";
 import MainHeader from "@/components/header/main-header";
 import { redirect } from "next/navigation";
-import { useContext } from "react";
+import { useEffect } from "react";
 
 export default function SignedInLayout (
 	{children}: Readonly<{children: React.ReactNode}>) {
-	const {user} = useContext(AuthContext);
+	const {user} = useAuthContext();
 
-	if (!user) {
-		redirect('/signin')
-	}
+	useEffect(() => {
+		if (!user) {
+			redirect('/')
+		}
+	}, [user])
 
-	return (
-		<>
+	let content;
+
+	if (user) {
+		content = <>
 			<MainHeader/>
-			<h1>Dentro</h1>
 			{children}
 		</>
-	)
+	} else {
+		content = <></>
+	}
+
+	return content;
 }
