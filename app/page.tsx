@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import loginImg from "@/assets/login-img.png"
+import loginImg from "@/public/assets/login-img.png"
 import LoginForm from "@/components/auth/login-form";
 export default function Home() {
   return(

@@ -1,15 +1,10 @@
 import { addDoc, collection, getFirestore, where, query, getDocs, or } from "@firebase/firestore";
 import firebaseApp from "@/firebase/config";
 import { DocumentData } from "@firebase/firestore";
+import { Category } from "@/models/category";
 
 const db = getFirestore(firebaseApp);
 
-type Category = {
-	name: string,
-	color: string,
-	userId: string,
-	id?: string
-}
 
 export async function addCategory(category: Category) {
 	try {

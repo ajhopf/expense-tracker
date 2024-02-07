@@ -107,6 +107,7 @@ export default function NewTransaction() {
 				label={"Date"}
 				required={true}
 				onChangeFn={(e) => setDate(e.target.value)}
+				// onChangeFn={(e) => console.log(e.target.value)}
 				type={"date"}
 				id={"date"}
 				borderColor={"green-700"}

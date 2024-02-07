@@ -1,15 +1,10 @@
-import { addDoc, collection, getFirestore, where, query, getDocs, getDoc, or } from "@firebase/firestore";
+import { addDoc, collection, getFirestore, where, query, getDocs, orderBy } from "@firebase/firestore";
 import firebaseApp from "@/firebase/config";
+import { Transaction } from "@/models/transaction";
 
 const db = getFirestore(firebaseApp);
 
-export type Transaction = {
-	accountId: string,
-	amount: number,
-	category?: string,
-	date: string,
-	id?: string
-}
+
 
 export async function addTransaction(accountId, date, amount, category) {
 	try {
@@ -24,11 +19,11 @@ export async function addTransaction(accountId, date, amount, category) {
 	}
 }
 
-export async function getTransactions(accountId) {
+export async function getTransactions(accountId):Promise<Transaction[]> {
 	const transactions:Transaction[] = [];
 	try {
 		const transactionsRef = await collection(db, "transactions");
-		const q = query(transactionsRef, where("accountId", "==", accountId));
+		const q = query(transactionsRef, where("accountId", "==", accountId), orderBy("date", "desc"));
 		const transactionsSnapshot = await getDocs(q);
 		transactionsSnapshot.forEach(t => {
 			transactions.push({id: t.id,...t.data()} as Transaction)

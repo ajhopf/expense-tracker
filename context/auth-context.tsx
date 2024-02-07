@@ -4,10 +4,9 @@ import { onAuthStateChanged, getAuth } from "@firebase/auth";
 import firebaseApp from "@/firebase/config";
 import React from "react";
 import { getUserAccount } from "@/firebase/accounts/accounts";
+import { User } from "@/models/user";
 
-type User = {
-	name: string
-}
+
 
 const auth = getAuth(firebaseApp);
 
@@ -25,6 +24,7 @@ export const AuthContextProvider = ({children}) => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
 				setUser(() => user);
+
 				getUserAccount(user.uid)
 					.then(accounts => setAccounts(accounts));
 			} else {
