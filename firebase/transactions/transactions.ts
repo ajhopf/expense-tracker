@@ -4,8 +4,6 @@ import { Transaction } from "@/models/transaction";
 
 const db = getFirestore(firebaseApp);
 
-
-
 export async function addTransaction(accountId, date, amount, category) {
 	try {
 		const docRef =

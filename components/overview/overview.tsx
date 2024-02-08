@@ -5,30 +5,25 @@ import { getTransactions } from "@/firebase/transactions/transactions";
 import {Transaction} from "@/models/transaction";
 import { collection, getFirestore, onSnapshot, orderBy, query, where } from "@firebase/firestore";
 import firebaseApp from "@/firebase/config";
+import { Account } from "@/models/account";
 
-export default function Overview() {
-	const {accounts} = useAuthContext();
+export default function Overview({account}) {
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [income, setIncome] = useState<number>(0);
+	const [expense, setExpense] = useState<number>(0);
+
 	const currentMonth = new Date().toLocaleString('en-us', {month: "long"});
-	const [income, setIncome] = useState(0);
-	const [expense, setExpense] = useState(0);
 
-	console.log(currentMonth)
-
-	// useEffect(() => {
-	// 	if (accounts && accounts.length> 0) {
-	// 		getTransactions(accounts[0])
-	// 			.then((transactions:Transaction[]) => setTransactions(transactions))
-	// 	}
-	// },[accounts])
 	useEffect(() => {
-		if (accounts && accounts.length > 0) {
+		setExpense(0)
+		setIncome(0)
+		if (account) {
 			const db = getFirestore(firebaseApp);
 			// Get reference to transactions collection
 			const transactionsRef = collection(db, 'transactions');
 
 			const q = query(transactionsRef,
-				where("accountId", "==", accounts[0]),
+				where("accountId", "==", account.id),
 				orderBy("date", "desc")
 			);
 			// Create snapshot listener on transactions
@@ -42,7 +37,7 @@ export default function Overview() {
 			// Cleanup function to remove listener on unmount
 			return () => unsubscribe();
 		}
-	}, [accounts]);
+	}, [account]);
 
 	useEffect(() => {
 		if (transactions && transactions.length > 0) {
@@ -59,7 +54,7 @@ export default function Overview() {
 	}, [transactions])
 
 	return <>
-		<ul>
+				<ul>
 			{transactions && transactions.map(transactions => {
 				return <li key={transactions.id}>
 					<p>Amount: {transactions.amount}</p>

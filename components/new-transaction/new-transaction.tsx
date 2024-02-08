@@ -9,7 +9,7 @@ import Button from "@/components/ui/button";
 
 type Type = "income" | "expense"
 
-export default function NewTransaction() {
+export default function NewTransaction({account}) {
 	const [amount, setAmount] = useState(0);
 	const [type, setType] = useState("expense");
 	const [date, setDate] = useState('2024-01-01');
@@ -29,15 +29,18 @@ export default function NewTransaction() {
 
 		console.log(transactionCategory)
 
-		const userAccounts = await getUserAccount(user.uid)
-
 		if (type === "expense" && amount > 0) {
-			addTransaction(userAccounts[0], date, -amount, transactionCategory)
+			addTransaction(account.id, date, -amount, transactionCategory)
 		} else {
-			addTransaction(userAccounts[0], date, amount, transactionCategory)
+			addTransaction(account.id, date, amount, transactionCategory)
 		}
 
 		setAmount(0)
+	}
+
+	const handleSelectCategory = (e) => {
+		console.log(e.target.value);
+		setTransactionCategory(e.target.value)
 	}
 
 	return <div className="border border-indigo-600">
@@ -107,7 +110,6 @@ export default function NewTransaction() {
 				label={"Date"}
 				required={true}
 				onChangeFn={(e) => setDate(e.target.value)}
-				// onChangeFn={(e) => console.log(e.target.value)}
 				type={"date"}
 				id={"date"}
 				borderColor={"green-700"}

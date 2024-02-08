@@ -23,7 +23,8 @@ export async function getUserAccount(userId) {
 		const q = await query(accountsRef, where("userId", "==", userId))
 		const accountsSnapshot = await getDocs(q);
 		accountsSnapshot.forEach(account => {
-			userAccounts.push(account.id)
+			const accountData = {id: account.id, ...account.data()}
+			userAccounts.push(accountData)
 		})
 		return userAccounts;
 	} catch (e) {
